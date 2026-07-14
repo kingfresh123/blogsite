@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>King Fresh Music | Premium Music Blog</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+        
+        body {
+            background: #050505;
+            color: white;
+            overflow-x: hidden;
+        }
+        /* HEADER */
+        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 6%;
+            background: rgba(0, 0, 0, .75);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 215, 0, .3);
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #FFD700;
+        }
+        
+        .logo span {
+            color: white;
+        }
+        
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            transition: .3s;
+        }
+        
+        nav a:hover {
+            color: #FFD700;
+        }
+        
+        .menu {
+            display: none;
+            font-size: 28px;
+            cursor: pointer;
+        }
+        /* HERO SLIDER */
+        
+        .hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            padding: 0 7%;
+            opacity: 0;
+            transition: 1s;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient( 90deg, rgba(0, 0, 0, .9), rgba(0, 0, 0, .3));
+        }
+        
+        .hero-content {
+            position: relative;
+            max-width: 600px;
+        }
+        
+        .hero-content h1 {
+            font-size: 65px;
+            line-height: 1.1;
+            background: linear-gradient( 90deg, #FFD700, #fff);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        
+        .hero-content p {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #ddd;
+        }
+        
+        .hero-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 35px;
+            border-radius: 50px;
+            background: #FFD700;
+            color: black;
+            font-weight: bold;
+            text-decoration: none;
+            transition: .3s;
+        }
+        
+        .hero-btn:hover {
+            transform: scale(1.05);
+        }
+        /* NEWS TICKER */
+        
+        .ticker {
+            background: #FFD700;
+            color: black;
+            padding: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        
+        .ticker span {
+            display: inline-block;
+            animation: move 15s linear infinite;
+        }
+        
+        @keyframes move {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+        /* SECTION STYLE */
+        
+        section {
+            padding: 80px 6%;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 40px;
+            margin-bottom: 40px;
+            color: #FFD700;
+        }
+        
+        .section-title small {
+            display: block;
+            font-size: 14px;
+            color: #aaa;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+        /* PREMIUM CARDS */
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .box {
+            background: linear-gradient( 145deg, #151515, #080808);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 215, 0, .15);
+            transition: .4s;
+        }
+        
+        .box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, .15);
+        }
+        
+        <!-- ARTIST PROFILE PAGE --><div id="artistProfile" style="
+ display:none;
+        padding:80px 6%;
+        background:#0a0a0a;
+        ">
+ <div class="box" style="text-align:center;"><img id="artistImage" style="
+ width:220px;
+        height:220px;
+        border-radius:50%;
+        object-fit:cover;
+        ">
+ <h1 id="artistName" style="color:#FFD700;margin-top:20px;"></h1><h3 id="artistGenre"></h3><p id="artistBio" style="margin-top:20px;color:#ddd;font-size:18px;"></p><h3 style="color:#FFD700;margin-top:30px;">Popular Songs </h3><ul id="artistSongs" style="list-style:none;line-height:2;"></ul><button onclick="closeArtist()" class="hero-btn" style="border:none;cursor:pointer;">Back To Artists </button></div></div>
+        /* FOOTER */
+        
+        footer {
+            background: #000;
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid #333;
+            color: #aaa;
+        }
+        /* MOBILE */
+        
+        @media(max-width:768px) {
+            nav {
+                display: none;
+                position: absolute;
+                top: 70px;
+                right: 20px;
+                background: #111;
+                padding: 25px;
+                border-radius: 15px;
+                flex-direction: column;
+            }
+            nav.show {
+                display: flex;
+            }
+            .menu {
+                display: block;
+            }
+            .hero-content h1 {
+                font-size: 40px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+       
+
+
+
+</div>
+
+</section>
+        </div>
+
+        <div class="logo">
+
+            KING FRESH <span>MUSIC</span>
+
+        </div>
+
+        <div class="menu" onclick="openMenu()">
+
+            ☰
+
+        </div>
+
+        <nav id="nav">
+
+            <a href="#home">Home</a>
+
+            <a href="#songs">Latest Songs</a>
+
+            <a href="#artists">Artists</a>
+
+            <a href="#news">News</a>
+
+            <a href="#events">Events</a>
+
+            <a href="#gallery">Gallery</a>
+
+            <a href="#contact">Contact</a>
+
+        </nav>
+
+    </header>
+
+    <!-- HERO -->
+
+    <div class="hero" id="home">
+
+        <div class="slide active" style="background-image:url('https://picsum.photos/1600/900?music1')">
+
+            <div class="hero-content">
+
+                <h1>
+                    Discover African Music
+                </h1>
+
+                <p>
+                    Your premium destination for new songs, artists, entertainment news and music culture.
+                </p>
+
+                <a class="hero-btn">
+
+Explore Music
+
+</a>
+
+            </div>
+
+        </div>
+
+        <div class="slide" style="background-image:url('https://picsum.photos/1600/900?music2')">
+
+            <div class="hero-content">
+
+                <h1>
+
+                    Promoting New Talents
+
+                </h1>
+
+                <p>
+
+                    Supporting upcoming artists and celebrating African creativity.
+
+                </p>
+
+                <a class="hero-btn">
+
+Meet Artists
+
+</a>
+
+            </div>
+
+        </div>
+
+        <div class="slide" style="background-image:url('https://picsum.photos/1600/900?music3')">
+
+            <div class="hero-content">
+
+                <h1>
+
+                    Music • News • Events
+
+                </h1>
+
+                <p>
+
+                    Everything entertainment in one professional platform.
+
+                </p>
+
+                <a class="hero-btn">
+
+Read More
+
+</a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="ticker">
+
+        <span>
+
+🔥 BREAKING: King Fresh Music brings you latest songs, entertainment updates, festivals and exclusive artist interviews.
+
+</span>
+
+    </div>
+
+    <script>
+        let slides = document.querySelectorAll(".slide");
+
+        let index = 0;
+
+        setInterval(() => {
+
+            slides[index].classList.remove("active");
+
+            index++;
+
+            if (index >= slides.length) {
+
+                index = 0;
+
+            }
+
+            slides[index].classList.add("active");
+
+        }, 5000);
+
+        function openMenu() {
+
+            document.getElementById("nav")
+                .classList.toggle("show");
+
+        }
+    </script>
+
+    <!-- LATEST SONGS SECTION -->
+
+    <section id="songs">
+
+        <h2 class="section-title">
+            <small>NEW RELEASES</small> Latest Songs
+        </h2>
+
+        <div class="grid">
+
+            <div class="box">
+
+                <img src="RULLING.jpg" style="width:100%;border-radius:15px;">
+
+                <h3 style="color:#FFD700;margin-top:15px;">
+                    RULLING KHING - Khaid nin Rukaya
+                </h3>
+
+                <p>
+                    Release Date: July 2026
+                </p>
+
+                <audio controls style="width:100%;margin-top:15px;">
+
+<source src="Rulling King - Khaid Nin Rukaya (Prod. by Qobrahbeatz).mp3" type="audio/mp3">
+
+</audio>
+
+                <button class="hero-btn" style="border:none;cursor:pointer;">
+
+Download
+
+</button>
+
+            </div>
+
+            <div class="box">
+
+                <img src="biggest.JPG" style="width:100%;border-radius:15px;">
+
+                <h3 style="color:#FFD700;margin-top:15px;">
+                    The Biggest - Level City Camp
+                </h3>
+
+                <p>
+                    Release Date: July 2026
+                </p>
+
+                <audio controls style="width:100%;margin-top:15px;">
+
+<source src="The Biggest - Level City - Prod by Fuji.mp3" type="audio/mp3">
+
+</audio>
+
+                <button class="hero-btn" style="border:none;cursor:pointer;">
+
+Download
+
+</button>
+
+            </div>
+
+            <div class="box">
+
+                <img src="g bwoy.jpg" style="width:100%;border-radius:15px;">
+
+                <h3 style="color:#FFD700;margin-top:15px;">
+                    G Bwoy - My Mising Gold
+                </h3>
+
+                <p>
+                    Release Date: June 2026
+                </p>
+
+                <audio controls style="width:100%;margin-top:15px;">
+
+<source src="G Bwoy-My Missing Gold (Prod by Qobrahbeatz) (1).mp3" type="audio/mp3">
+
+</audio>
+
+                <button class="hero-btn" style="border:none;cursor:pointer;">
+
+Download
+
+</button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- TRENDING SONGS -->
+
+    <section>
+
+        <h2 class="section-title">
+
+            <small>TOP CHART</small> Trending Songs
+
+        </h2>
+
+        <div class="grid">
+
+            <div class="box">
+
+                <h1 style="color:#FFD700;">
+                    01
+                </h1>
+
+                <h3>
+                    King Fresh - Champion
+                </h3>
+
+                <p>
+                    🔥 25K Plays
+                </p>
+
+            </div>
+
+            <div class="box">
+
+                <h1 style="color:#FFD700;">
+                    02
+                </h1>
+
+                <h3>
+                    Level City - Peace Walk
+                </h3>
+
+                <p>
+                    🔥 18K Plays
+                </p>
+
+            </div>
+
+            <div class="box">
+
+                <h1 style="color:#FFD700;">
+                    03
+                </h1>
+
+                <h3>
+                    African Beat
+                </h3>
+
+                <p>
+                    🔥 15K Plays
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- FEATURED ARTISTS -->
+
+    <section id="artists">
+
+        <h2 class="section-title">
+            <small>OUR STARS</small> Featured Artists
+        </h2>
+
+        <div class="grid">
+
+            <div class="box artist-card" onclick="openArtist('The Biggest')">
+
+                <img src="biggest.JPG" style="
+width:150px;
+height:150px;
+border-radius:50%;
+object-fit:cover;
+display:block;
+margin:auto;
+">
+
+                <h3 style="text-align:center;color:#FFD700;margin-top:15px;">
+                    The Biggest
+                </h3>
+
+                <p style="text-align:center;">
+                    Dancehall Artist
+                </p>
+
+            </div>
+
+            <div class="box artist-card" onclick="openArtist('G Bwoy')">
+
+                <img src="g bwoy.jpg" style="
+width:150px;
+height:150px;
+border-radius:50%;
+object-fit:cover;
+display:block;
+margin:auto;
+">
+
+                <h3 style="text-align:center;color:#FFD700;margin-top:15px;">
+                    G Bwoy Music
+                </h3>
+
+                <p style="text-align:center;">
+                    Singing Artist
+                </p>
+
+            </div>
+
+            <div class="box artist-card" onclick="openArtist('Rulling Khing')">
+
+                <img src="RULLING.jpg" style="
+width:150px;
+height:150px;
+border-radius:50%;
+object-fit:cover;
+display:block;
+margin:auto;
+">
+
+                <h3 style="text-align:center;color:#FFD700;margin-top:15px;">
+                    Rulling Khing
+                </h3>
+
+                <p style="text-align:center;">
+                    Singer
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <h3 style="
+text-align:center;
+color:#FFD700;
+margin-top:15px;
+">
+
+        KING FRESH
+
+    </h3>
+
+    <p style="text-align:center;">
+
+        Afrobeat Artist
+
+    </p>
+
+    </div>
+
+    <div class="box">
+
+        <img src="https://picsum.photos/300/300?artist2" style="
+width:150px;
+height:150px;
+border-radius:50%;
+object-fit:cover;
+display:block;
+margin:auto;
+">
+
+        <h3 style="
+text-align:center;
+color:#FFD700;
+margin-top:15px;
+">
+
+            ALL EYES
+
+        </h3>
+
+        <p style="text-align:center;">
+
+            Hip Hop Artist
+
+        </p>
+
+    </div>
+
+    <div class="box">
+
+        <img src="https://picsum.photos/300/300?artist3" style="
+width:150px;
+height:150px;
+border-radius:50%;
+object-fit:cover;
+display:block;
+margin:auto;
+">
+
+        <h3 style="
+text-align:center;
+color:#FFD700;
+margin-top:15px;
+">
+
+            AUTHENTIC
+
+        </h3>
+
+        <p style="text-align:center;">
+
+            Rising Star
+
+        </p>
+
+    </div>
+
+    </div>
+
+    </section>
+
+    <!-- MUSIC PLAYER BAR -->
+
+    <div id="player" style="
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#111;
+padding:15px;
+display:flex;
+justify-content:center;
+gap:20px;
+border-top:1px solid gold;
+z-index:999;
+">
+
+        <button onclick="playMusic()" style="
+background:#FFD700;
+border:none;
+padding:10px 20px;
+border-radius:20px;
+">
+
+▶ Play
+
+</button>
+
+        <button onclick="pauseMusic()" style="
+background:white;
+border:none;
+padding:10px 20px;
+border-radius:20px;
+">
+
+⏸ Pause
+
+</button>
+
+    </div>
+
+    <script>
+        let playerAudio = new Audio(
+            "music/song1.mp3"
+        );
+
+        function playMusic() {
+
+            playerAudio.play();
+
+        }
+
+        function pauseMusic() {
+
+            playerAudio.pause();
+
+        }
+    </script>
+
+    <!-- NEWS SECTION -->
+
+    <section id="news">
+
+        <h2 class="section-title">
+
+            <small>LATEST UPDATES</small> Entertainment News
+
+        </h2>
+
+        <div class="grid">
+
+            <div class="box">
+
+                <img src="https://picsum.photos/600/400?news1" style="width:100%;border-radius:15px;">
+
+                <h3 style="color:#FFD700;margin-top:15px;">
+                    Ghana Music Industry Growing Bigger
+                </h3>
+
+                <p>
+                    Latest updates, interviews and entertainment stories from Ghana.
+                </p>
+
+                <a class="hero-btn">
+Read More
+</a>
+
+            </div>
+
+            <div class="box">
+
+                <img src="https://picsum.photos/600/400?news2" style="width:100%;border-radius:15px;">
+
+                <h3 style="color:#FFD700;margin-top:15px;">
+                    New Artists Taking Over
+                </h3>
+
+                <p>
+                    Discover upcoming talents making waves across Africa.
+                </p>
+
+                <a class="hero-btn">
+Read More
+</a>
+
+            </div>
+
+            <div class="box">
+
+                <img src="https://picsum.photos/600/400?news3" style="width:100%;border-radius:15px;">
+
+                <h3 style="color:#FFD700;margin-top:15px;">
+                    Music Awards 2026
+                </h3>
+
+                <p>
+                    Celebrating outstanding musicians and creatives.
+                </p>
+
+                <a class="hero-btn">
+Read More
+</a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- INTERNATIONAL NEWS -->
+
+    <section>
+
+        <h2 class="section-title">
+
+            <small>GLOBAL MUSIC</small> International News
+
+        </h2>
+
+        <div class="grid">
+
+            <div class="box">
+
+                <h3 style="color:#FFD700;">
+                    🌍 African Music Expansion
+                </h3>
+
+                <p>
+                    African sounds continue reaching global audiences through streaming platforms.
+                </p>
+
+            </div>
+
+            <div class="box">
+
+                <h3 style="color:#FFD700;">
+                    🌍 Global Collaborations
+                </h3>
+
+                <p>
+                    Artists from different countries are joining forces for new projects.
+                </p>
+
+            </div>
+
+            <div class="box">
+
+                <h3 style="color:#FFD700;">
+                    🌍 World Music Trends
+                </h3>
+
+                <p>
+                    Follow worldwide music movements and entertainment updates.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- EVENTS SECTION -->
+
+    <section id="events">
+
+        <h2 class="section-title">
+
+            <small>UPCOMING</small> Events & Festivals
+
+        </h2>
+
+        <div class="grid">
+
+            <div class="box">
+
+                <img src="https://picsum.photos/500/300?event1" style="width:100%;border-radius:15px;">
+
+                <h3 style="color:#FFD700;">
+                    Music Festival 2026
+                </h3>
+
+                <p>
+                    📅 Date: December 2026
+                </p>
+
+                <p>
+                    📍 Location: Ghana
+                </p>
+
+            </div>
+
+            <div class="box">
+
+                <img src="https://picsum.photos/500/300?event2" style="width:100%;border-radius:15px;">
+
+                <h3 style="color:#FFD700;">
+                    Peace Walk Concert
+                </h3>
+
+                <p>
+                    Live performances from top artists.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- VIDEO SECTION -->
+
+    <section>
+
+        <h2 class="section-title">
+
+            <small>WATCH</small> Featured Videos
+
+        </h2>
+
+        <div class="grid">
+
+            <div class="box">
+
+                <iframe width="100%" height="250" src="https://www.youtube.com/embed/" style="border-radius:15px;border:none;">
+</iframe>
+
+                <h3>
+                    Latest Music Video
+                </h3>
+
+            </div>
+
+            <div class="box">
+
+                <iframe width="100%" height="250" src="https://www.youtube.com/embed/" style="border-radius:15px;border:none;">
+</iframe>
+
+                <h3>
+                    Artist Interview
+                </h3>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- GALLERY -->
+
+    <section id="gallery">
+
+        <h2 class="section-title">
+
+            <small>MEMORIES</small> Gallery
+
+        </h2>
+
+        <div class="grid">
+
+            <div class="box">
+
+                <img src="https://picsum.photos/500/400?gallery1" style="width:100%;border-radius:15px;">
+
+            </div>
+
+            <div class="box">
+
+                <img src="https://picsum.photos/500/400?gallery2" style="width:100%;border-radius:15px;">
+
+            </div>
+
+            <div class="box">
+
+                <img src="https://picsum.photos/500/400?gallery3" style="width:100%;border-radius:15px;">
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- CEO PROFILE -->
+
+    <section>
+
+        <h2 class="section-title">
+
+            <small>ABOUT US</small> CEO Profile
+
+        </h2>
+
+        <div class="box" style="text-align:center;">
+
+            <img src="king fresh.png" style="
+width:180px;
+height:180px;
+border-radius:50%;
+object-fit:cover;
+">
+
+            <h2 style="color:#FFD700;margin-top:20px;">
+                King Fresh
+            </h2>
+
+            <p>
+
+                Founder & CEO of King Fresh Music. A passionate music promoter dedicated to supporting African artists and entertainment culture.
+
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- DONATION -->
+
+    <section>
+
+        <h2 class="section-title">
+
+            <small>SUPPORT PLATFORM</small> Donate / Support
+
+        </h2>
+
+        <div class="box" style="text-align:center;">
+
+            <h2 style="color:#FFD700;">
+                Support King Fresh Music
+            </h2>
+
+            <p>
+                Help us promote upcoming artists, events and entertainment content.
+            </p>
+
+            <button class="hero-btn" onclick="donate()" style="border:none;cursor:pointer;">
+
+💛 Donate Now
+
+</button>
+
+        </div>
+
+    </section>
+
+    <!-- CONTACT -->
+
+    <section id="contact">
+
+        <h2 class="section-title">
+
+            <small>GET IN TOUCH</small> Contact Us
+
+        </h2>
+
+        <div class="box">
+
+            <p>
+                📧 Email: info@kingfreshmusic.com
+            </p>
+
+            <p>
+                📱 Phone: +233 XXX XXX XXX
+            </p>
+
+            <p>
+                📍 Ghana, West Africa
+            </p>
+
+        </div>
+
+    </section>
+
+    <script>
+        function donate() {
+
+            alert(
+                "Paystack Donation Page Will Open Here"
+            );
+
+        }
+    </script>
+    <!-- SEARCH BAR -->
+
+    <section>
+
+        <div class="box" style="text-align:center;">
+
+            <h2 style="color:#FFD700;">
+                Search Music & Artists
+            </h2>
+
+            <input type="text" id="searchBox" placeholder="Search songs, artists, news..." onkeyup="searchContent()" style="
+width:80%;
+padding:15px;
+margin-top:20px;
+border-radius:30px;
+border:none;
+font-size:16px;
+">
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <h2 style="color:#FFD700;">
+            KING FRESH MUSIC
+        </h2>
+
+        <p>
+            Premium Music Blog | Latest Songs | Entertainment News | Events
+        </p>
+
+        <br>
+
+        <div>
+
+            <a href="#" style="color:#FFD700;margin:10px;">
+Facebook
+</a>
+
+            <a href="#" style="color:#FFD700;margin:10px;">
+YouTube
+</a>
+
+            <a href="#" style="color:#FFD700;margin:10px;">
+TikTok
+</a>
+
+            <a href="#" style="color:#FFD700;margin:10px;">
+Instagram
+</a>
+
+        </div>
+
+        <br>
+
+        <p>
+            © 2026 King Fresh Music. All Rights Reserved.
+        </p>
+
+    </footer>
+
+    <script>
+        /* MOBILE MENU */
+
+        function openMenu() {
+
+            let nav = document.getElementById("nav");
+
+            nav.classList.toggle("show");
+
+        }
+
+        /* HERO SLIDER */
+
+        let slides = document.querySelectorAll(".slide");
+
+        let currentSlide = 0;
+
+        function changeSlide() {
+
+            slides[currentSlide]
+                .classList.remove("active");
+
+            currentSlide++;
+
+            if (currentSlide >= slides.length) {
+
+                currentSlide = 0;
+
+            }
+
+            slides[currentSlide]
+                .classList.add("active");
+
+        }
+
+        setInterval(changeSlide, 5000);
+
+        /* SEARCH SYSTEM */
+
+        function searchContent() {
+
+            let input = document
+                .getElementById("searchBox")
+                .value
+                .toLowerCase();
+
+            let boxes = document.querySelectorAll(".box");
+
+            boxes.forEach(box => {
+
+                let text = box.innerText.toLowerCase();
+
+                if (text.includes(input)) {
+
+                    box.style.display = "block";
+
+                } else {
+
+                    box.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+        /* MUSIC FAVORITE SYSTEM */
+
+        function favorite(song) {
+
+            alert(
+                song + " added to favorites ❤️"
+            );
+
+        }
+
+        /* SCROLL ANIMATION */
+
+        let reveal = document.querySelectorAll(".box");
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                reveal.forEach(item => {
+
+                    let position =
+                        item.getBoundingClientRect().top;
+
+                    let screen =
+                        window.innerHeight - 100;
+
+                    if (position < screen) {
+
+                        item.style.opacity = "1";
+
+                        item.style.transform = "translateY(0)";
+
+                    }
+
+                });
+
+            }
+
+        );
+
+        /* DONATION BUTTON */
+
+        function donate() {
+
+            window.open(
+                "https://paystack.com",
+                "_blank"
+            );
+
+        }
+
+        const artists = {
+
+            kingfresh: {
+
+                name: "KING FRESH",
+
+                genre: "Afrobeat / African Music",
+
+                image: "https://picsum.photos/300/300?artist1",
+
+                bio: "King Fresh is a Ghanaian Afrobeat artist, music promoter and founder of King Fresh Music. He focuses on promoting African sounds and supporting upcoming talents.",
+
+                songs: [
+                    "New Beginning",
+                    "Champion",
+                    "Peace Walk"
+                ]
+
+            },
+
+            alleyes: {
+
+                name: "ALL EYES",
+
+                genre: "Hip Hop Artist",
+
+                image: "https://picsum.photos/300/300?artist2",
+
+                bio: "All Eyes is a talented hip hop musician known for powerful lyrics and energetic performances.",
+
+                songs: [
+                    "Street Life",
+                    "My Story",
+                    "Victory"
+                ]
+
+            },
+
+            authentic: {
+
+                name: "AUTHENTIC",
+
+                genre: "Rising Star",
+
+                image: "https://picsum.photos/300/300?artist3",
+
+                bio: "Authentic is an upcoming artist bringing fresh creativity and new sounds to the music industry.",
+
+                songs: [
+                    "Dreams",
+                    "Higher",
+                    "New Wave"
+                ]
+
+            }
+
+        };
+
+        function openArtist(id) {
+
+            let artist = artists[id];
+
+            document.getElementById("artistProfile").style.display = "block";
+
+            document.getElementById("artistImage").src = artist.image;
+
+            document.getElementById("artistName").innerHTML = artist.name;
+
+            document.getElementById("artistGenre").innerHTML = artist.genre;
+
+            document.getElementById("artistBio").innerHTML = artist.bio;
+
+            let songs = "";
+
+            artist.songs.forEach(song => {
+
+                songs += "<li>🎵 " + song + "</li>";
+
+            });
+
+            document.getElementById("artistSongs").innerHTML = songs;
+
+            window.scrollTo(0, 0);
+
+        }
+
+        function closeArtist() {
+
+            document.getElementById("artistProfile").style.display = "none";
+
+        }
+    </script>
+    
+
+</body>
+
+</html>
+</body>
+
+</html>
